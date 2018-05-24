@@ -1,0 +1,5 @@
+TweetsRetrievalTool-1.2/ filter=lfs diff=lfs merge=lfs -text
+ISCRAM18_datasets/ filter=lfs diff=lfs merge=lfs -text
+ISCRAM18_datasets.zip filter=lfs diff=lfs merge=lfs -text
+ISCRAM18_datasets/Harvey_tweet_ids.txt filter=lfs diff=lfs merge=lfs -text
+harvey-run.txt filter=lfs diff=lfs merge=lfs -text
