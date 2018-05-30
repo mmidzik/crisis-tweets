@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,800' rel='stylesheet' type='text/css'>
+
+  <script src="http://d3js.org/d3.v3.js"></script>
+  <script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+  <script src="d3weathermap.js"></script>
+
+  <style type='text/css'>
+  body {width: 680px}
+
+  path {
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+
+  #mainmap {position: relative;}
+
+  #mainmap .state {
+    fill: #eee;
+    stroke: #222;
+    stroke-width: 2px;
+  }
+
+  #mainmap .counties {
+    fill: rgb(245,245,245);
+    stroke: #000;
+    stroke-width: 0.25px;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+
+  #mainmap .active {
+    stroke: #eee; stroke-width: 0.5px;
+  }
+
+  #mainmap .currenttemperature-label {
+  	font-family: "Open Sans", sans-serif;
+    font-weight: 800;
+    z-index: 1000;
+    color: #222;
+    font-size: 2.2em;
+  }
+
+
+  #mainmap .more {
+  	font-family: "Open Sans", sans-serif;
+    font-weight: 400;
+    z-index: 1000;
+    color: #222;
+    font-size: 1em;
+    display: none;
+  }
+
+  #mainmap .more tspan {
+  	font-size: 0.9em;
+  }
+
+  #mainmap tspan .number {
+  	font-weight: 800;
+  	font-size: 1em;
+  }
+
+
+  #mainmap .place { fill: none; stroke: none; }
+
+  #mainmap .label {font-family: 'Open Sans',sans-serif; float: right; width: 450px}
+
+  h1, h2 {font-family: 'Open Sans',sans-serif; }
+
+  #coldtracchatter {
+    font-family: 'Open Sans',sans-serif;
+  	position: absolute;
+  	left: 10px;
+  	top: 40px;
+  	width: 380px;
+  	z-index: 100;
+  }
+
+  #coldtracchatter p {
+  	width: 230px;
+  }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div id="coldtracchatter">
+    <h1>Current temperatures</h1>
+    <p>Mouse over the map's temperature readings to compare record lows for each location.</p>
+  </div>
+  <div id="mainmap">
+  </div>
+
+</body>
+
+
+</html>
