@@ -19,16 +19,23 @@ html, body {
   margin-top: 30px;
 }
 
-.form-check-label{
-  margin-right: 50px;
+.form-check-input{
+  margin-right: 300px;
   margin-bottom: 20px;
 }
 
+.form-check-label{
+  position: relative;
+  margin-bottom: 20px;
+}
 
-
-.tweet{
+#twitter-widget-0{
   margin-left: 20%;
+}
+.tweet{
+  margin-left: 20px;
   margin-top: 70px;
+  width: 400px !important;
 
 }
 
