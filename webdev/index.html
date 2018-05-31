@@ -2,13 +2,41 @@
 <html lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="author" content="Script Tutorials" />
-  <title>Bootstrap one-page template with Parallax effect | Script Tutorials</title>
+  <title>Harvey Tweets</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
+
+  <!-- Bootstrap css -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
+
+  <!--leaflet css-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
   <!-- attach CSS styles -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link href="css/style.css" rel="stylesheet" />
+
+  <link href="css/style.css" rel="stylesheet"/>
+
+  <!-- add required libraries -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.js"></script>
+  <!--jquery and Popper-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+
+  <!--boostrap-->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+  <!--leaflet.ajax for asynchronously adding geojson data-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+
+  <!--story map plugin-->
+  <script src="dist/storymap.2.4.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+
+
+
 </head>
 <body>
 
@@ -60,6 +88,44 @@
   </div>
   <!-- /fourth section -->
 
+  <div  class="pad-section">
+    <div class="container">
+      <div class="row flask">
+
+        <div class="col-sm-4">
+        <p> I want to see a ...  </p>
+        <select class="form-control" id="sentiment" name="sentiment">
+            <option value="1" selected>Positive Tweet</option>
+            <option value="0">Negative Tweet</option>
+        </select>
+
+        <p> about ... </p>
+
+        <div class="form-check">
+            <input class="form-check-input" name="group100" type="radio" id="radio100">
+            <label class="form-check-label" for="radio100">An Organization/Person</label>
+            <input class="form-check-input" name="group100" type="radio" id="radio100">
+            <label class="form-check-label" for="radio100">A Topic</label>
+        </div>
+
+
+        <select class="form-control" id="rating" name="rating">
+            <option value="1" selected>Positive Tweet</option>
+            <option value="0">Negative Tweet</option>
+        </select>
+
+
+        </div>
+
+        <div class="col-sm-8 tweet-block">
+
+          <div  class = 'tweet' id="tweet" ></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- fifth section -->
   <div id="services" class="pad-section">
     <div class="container">
@@ -72,15 +138,18 @@
   </div>
   <!-- /fifth section -->
 
-  <!-- google map -->
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-6">
-
-      <div class="col-sm-6" id="map"></div>
+  <div  class="map-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12" id = 'map'> </div>
       </div>
     </div>
-  <!-- /google map -->
+  </div>
+
+
+
+
+
 
   <!-- footer -->
   <footer>
@@ -91,16 +160,127 @@
   <!-- /footer -->
 
   <!-- attach JavaScripts -->
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-  <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
-  <script src="https://code.jquery.com/jquery-1.11.1.min.js" type="text/javascript"></script>
-  <script type="text/javascript" src="js/storymap.js"></script>
-  <!-- <script src="js/main.js"></script> -->
-  <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="js/graph.js"></script>
-  <script type="text/javascript">
+  <script src="data/path.js"></script>
+
+  <script sync src="https://platform.twitter.com/widgets.js"></script>
+
+  <script>
+
+  var select = document.getElementById("sentiment");
+  var value = 1
+  ajax_call(value)
+  select.onchange = function(value){
+      var selectedString = select.options[select.selectedIndex].value;
+      value = selectedString;
+      ajax_call(value)
+      console.log(value)
+  }
+
+
+
+
+  function ajax_call(value){
+
+    $.ajax({
+           type: "POST",
+           url: "http://0.0.0.0:5000/tweet",
+           data: {'value':value},
+           success: function (results) {
+             console.log(results)
+             tweetid = results.tweet
+
+               var tweet = document.getElementById("tweet");
+               var id = tweetid
+
+               twttr.widgets.createTweet(
+                 id, tweet,
+                 {
+                   conversation : 'all',    // or all
+                   cards        : 'visible',  // or visible
+                   linkColor    : '#cc0000', // default is blue
+                   theme        : 'light'    // or dark
+                 })
+
+    
+           },
+           error: function (result) {
+           }
+         })
+
+     }
+
+
+  // Display tweet code
+
 
 
   </script>
+
+
+
+  <script>
+    var options = {
+  			center: [27.604438, -94.752415],
+  			zoom: 6.5,
+  			zoomSnap: .1,
+  			zoomControl: false
+  		}
+
+
+  		var map = L.map('map', options);
+
+  		L.control.zoom({
+  			position: 'topright'
+  		}).addTo(map);
+
+
+
+  		//add intiles from the lesson template
+        var tiles = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+            attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> © <a href="http://cartodb.com/attributions">CartoDB</a>',
+            subdomains: 'abcd',
+            maxZoom: 18
+        }).addTo(map);
+
+
+      var myRoute = L.geoJson(routeData, {
+
+    	    filter : function(feature) {
+    	        if(feature.geometry.type == "LineString") {
+    	            return feature;
+    	        }
+    	    },
+
+    	    style : function(feature) {
+
+    	        return {
+    	            color: "#4189a8",
+    	            weight: 4,
+    	            opacity: .9,
+    	            dashArray: "5, 5"
+    	        }
+    	    }
+
+    	}).addTo(map);
+
+      var myStops = L.geoJson(routeData, {
+
+      filter : function(feature) {
+          if(feature.geometry.type == "Point") {
+              return feature;
+          }
+      },
+
+
+      onEachFeature : function(feature, layer) {
+          layer.bindTooltip(feature.properties.date);
+
+      }
+
+      }).addTo(map);
+
+  </script>
+
 </body>
 </html>

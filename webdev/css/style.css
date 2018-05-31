@@ -12,6 +12,28 @@ html, body {
   width: 100%;
 }
 
+.flask p {
+  font-size: 25px;
+  color:#306d9f;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
+.form-check-label{
+  margin-right: 50px;
+  margin-bottom: 20px;
+}
+
+
+
+.tweet{
+  margin-left: 20%;
+  margin-top: 70px;
+
+}
+
+
+
 /* padded section */
 .pad-section {
   padding: 50px 0;
@@ -62,6 +84,17 @@ html, body {
   height: 500px
 }
 
+#map {
+	height: 600px;
+	margin-right: auto;
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
+
+.map-section{
+  background: white;
+}
+
 #services {
   background-color: #306d9f;
   color: #ffffff;
@@ -81,7 +114,7 @@ html, body {
 #information {
   background: url(../images/texasfloodre.jpg) no-repeat center center fixed;
   display: table;
-  height: 800px;
+  height: 500px;
   position: relative;
   width: 100%;
   -webkit-background-size: cover;
@@ -98,6 +131,7 @@ html, body {
 }
 
 footer {
+  background: #306d9f;
   padding: 20px 0;
 }
 footer .glyphicon {
