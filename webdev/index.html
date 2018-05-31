@@ -93,24 +93,28 @@
       <div class="row flask">
 
         <div class="col-sm-4">
-        <p> I want to see a ...  </p>
+        <p> Show me a ...  </p>
         <select class="form-control" id="sentiment" name="sentiment">
             <option value="1" selected>Positive Tweet</option>
             <option value="0">Negative Tweet</option>
         </select>
 
         <p> about ... </p>
-
-
-        <select class="form-control" id="rating" name="rating">
-            <option value="1" selected>Climate change</option>
-            <option value="0">President Trump</option>
+        <select class="form-control" id="topic" name="topic">
+            <option value="Congress" >Congress</option>
+            <option value="Trump" selected>Trump</option>
+            <option value="Obama">Obama</option>
+            <option value="FEMA">FEMA</option>
+            <option value="Red Cross">American Red Cross</option>
+              <option value="Coast Guard">Coast Guard</option>
         </select>
 
 
         </div>
 
-        <div class="col-sm-8 tweet-block">
+        <div class="col-sm-1"></div>
+
+        <div class="col-sm-7 tweet-block">
 
           <div id="tweet" tweetID="515490786800963584"></div>
 
@@ -180,11 +184,24 @@
 
 
   var select = document.getElementById("sentiment");
+  var topic_select = document.getElementById("topic");
+
   select.onchange = function(value){
       var selectedString = select.options[select.selectedIndex].value;
+      var topicSelectedString = topic_select.options[topic_select.selectedIndex].value;
+      console.log(selectedString,topicSelectedString)
       value = selectedString;
+      topic = topicSelectedString
       ajax_call(value)
-      console.log(value)
+  }
+
+  topic_select.onchange = function(value){
+      var topicSelectedString = topic_select.options[topic_select.selectedIndex].value;
+      var selectedString = select.options[select.selectedIndex].value;
+      console.log(selectedString,topicSelectedString)
+      value = selectedString;
+      topic = topicSelectedString
+      ajax_call(value)
   }
 
 
@@ -195,13 +212,12 @@
     $.ajax({
            type: "POST",
            url: "http://0.0.0.0:5000/tweet",
-           data: {'value':value},
+           data: {'value':value, 'topic': topic},
            success: function (results) {
-             console.log(results)
              tweetid = results.tweet
 
                var tweet = document.getElementById("tweet");
-               console.log(tweet)
+               tweet.innerHTML = ''
                var id = tweetid
 
                twttr.widgets.createTweet(

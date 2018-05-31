@@ -29,14 +29,23 @@ html, body {
   margin-bottom: 20px;
 }
 
-#twitter-widget-0{
-  margin-left: 20%;
-}
+
 .tweet{
-  margin-left: 20px;
   margin-top: 70px;
   width: 400px !important;
 
+}
+
+.axis text {
+  font: 14px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  stroke-width: 2; 
+  shape-rendering: crispEdges;
 }
 
 

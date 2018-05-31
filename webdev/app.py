@@ -8,7 +8,8 @@ from flask_cors import CORS, cross_origin
 #---------- MODEL IN MEMORY ----------------#
 
 # Read in tweets with sentiment
-tweets = pickle.load(open("df_sent_with_ids_flask.pkl", "rb"))
+# tweets = pickle.load(open("df_sent_with_ids_flask.pkl", "rb"))
+tweets = pickle.load(open("df_sent_ner_flask.pkl", "rb"))
 
 
 #---------- URLS AND WEB PAGES -------------#
@@ -34,12 +35,18 @@ def score():
     data = request.form
     print(data)
     value = data['value']
+    topic = data['topic']
+    print(topic)
     value = int(value)
     tweet_id = 0
     if value == 1:
-        tweet_id = tweets.sort_values('polarity', ascending = False).reset_index().id[0]
+        topic_selected = tweets[tweets['entities'].apply(lambda x: topic in x)]
+        selected = topic_selected.sort_values('polarity', ascending = False).reset_index()[:10]
+        tweet_id = list(selected.sample(1).id)[0]
     if value == 0:
-        tweet_id = tweets.sort_values('polarity', ascending = True).reset_index().id[0]
+        topic_selected = tweets[tweets['entities'].apply(lambda x: topic in x)]
+        selected = topic_selected.sort_values('polarity', ascending = True).reset_index()[:10]
+        tweet_id = list(selected.sample(1).id)[0]
     results = {"tweet": tweet_id}
     return flask.jsonify(results)
 

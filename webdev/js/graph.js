@@ -1,30 +1,26 @@
 var chartDiv = document.getElementById("chart");
-var svg = d3.select(chartDiv).append("svg");
+var svg = d3.select(chartDiv).append("svg")
 
-// var svg = d3.select("svg"),
-//     margin = {top: 20, right: 20, bottom: 30, left: 40},
-//     width = +svg.attr("width") - margin.left - margin.right,
-//     height = +svg.attr("height") - margin.top - margin.bottom,
-//     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+var margin = {top: 20, right: 50, bottom: 20, left: 50};
 
-// d3.select(window)
-//   .on("resize", function() {
-//     var targetWidth = svg.node().getBoundingClientRect().width;
-//     svg.attr("width", targetWidth);
-//     svg.attr("height", targetWidth / aspect);
-//   });
+var width = chartDiv.clientWidth- margin.left - margin.right
+var height = chartDiv.clientHeight - margin.top - margin.bottom;
 
-var width = chartDiv.clientWidth;
-var height = chartDiv.clientHeight;
+
 
 svg
 .attr("width", width)
 .attr("height", height);
+g = svg.append("g").attr("transform", "translate(" + margin.left +  "," + margin.bottom + ")");
 
 
 
 function redraw(){
-  console.log('change')
+  width = chartDiv.clientWidth;
+  height = chartDiv.clientHeight;
+  svg
+  .attr("width", width)
+  .attr("height", height);
 }
 
 window.addEventListener("resize", redraw);
@@ -42,26 +38,27 @@ var y = d3.scaleLinear()
     .rangeRound([height, 0]);
 
 var z = d3.scaleOrdinal()
-    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+    .range(["#98abc5", "#6b486b", "#d0743c"]);
 
-d3.csv("data.csv", function(d, i, columns) {
+d3.csv("data/data.csv", function(d, i, columns) {
   for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
   return d;
 }, function(error, data) {
   if (error) throw error;
 
   var keys = data.columns.slice(1);
+  console.log(keys)
 
-  x0.domain(data.map(function(d) { return d.State; }));
+  x0.domain(data.map(function(d) { return d.Date; }));
   x1.domain(keys).rangeRound([0, x0.bandwidth()]);
   y.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
 
- svg.append("g")
+ g.append("g")
     .selectAll("g")
     .data(data)
     .enter().append("g")
     .attr("class","bar")
-    .attr("transform", function(d) { return "translate(" + x0(d.State) + ",0)"; })
+    .attr("transform", function(d) { return "translate(" + x0(d.Date) + ",0)"; })
     .selectAll("rect")
     .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
     .enter().append("rect")
@@ -71,24 +68,25 @@ d3.csv("data.csv", function(d, i, columns) {
       .attr("height", function(d) { return height - y(d.value); })
       .attr("fill", function(d) { return z(d.key); });
 
-  svg.append("g")
+  g.append("g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x0));
 
-  svg.append("g")
+
+  g.append("g")
       .attr("class", "y axis")
       .call(d3.axisLeft(y).ticks(null, "s"))
     .append("text")
       .attr("x", 2)
-      .attr("y", y(y.ticks().pop()) + 0.5)
+      .attr("y", y(y.ticks().pop()) + 0.7)
       .attr("dy", "0.32em")
       .attr("fill", "#000")
       .attr("font-weight", "bold")
       .attr("text-anchor", "start")
-    
 
-  var legend = svg.append("g")
+
+  var legend = g.append("g")
       .attr("font-family", "sans-serif")
       .attr("font-size", 10)
       .attr("text-anchor", "end")
@@ -113,6 +111,12 @@ d3.csv("data.csv", function(d, i, columns) {
       .text(function(d) { return d; });
 
   var filtered = [];
+
+  width = chartDiv.clientWidth;
+  height = chartDiv.clientHeight;
+  svg
+  .attr("width", width)
+  .attr("height", height);
 
   ////
   //// Update and transition on click:
@@ -148,7 +152,7 @@ d3.csv("data.csv", function(d, i, columns) {
     y.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { if (filtered.indexOf(key) == -1) return d[key]; }); })]).nice();
 
     // update the y axis:
-            svg.select(".y")
+            g.select(".y")
             .transition()
             .call(d3.axisLeft(y).ticks(null, "s"))
             .duration(500);
@@ -157,7 +161,7 @@ d3.csv("data.csv", function(d, i, columns) {
     //
     // Filter out the bands that need to be hidden:
     //
-    var bars = svg.selectAll(".bar").selectAll("rect")
+    var bars = g.selectAll(".bar").selectAll("rect")
       .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
 
    bars.filter(function(d) {
