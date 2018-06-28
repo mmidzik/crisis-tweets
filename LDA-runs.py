@@ -108,7 +108,7 @@ for text in cleaned_docs:
     for tag, chunk in groupby(classified_text, lambda x:x[1]):
         if tag != "O":
             entity = " ".join(w for w, t in chunk)
-            doc_entities.append(entity)
+           doc_entities.append(entity)
     entities.append(doc_entities)
     i+=1
     if i %1000 == 0:

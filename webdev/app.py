@@ -41,11 +41,11 @@ def score():
     tweet_id = 0
     if value == 1:
         topic_selected = tweets[tweets['entities'].apply(lambda x: topic in x)]
-        selected = topic_selected.sort_values('polarity', ascending = False).reset_index()[:10]
+        selected = topic_selected.sort_values('polarity', ascending = False).reset_index()[:5]
         tweet_id = list(selected.sample(1).id)[0]
     if value == 0:
         topic_selected = tweets[tweets['entities'].apply(lambda x: topic in x)]
-        selected = topic_selected.sort_values('polarity', ascending = True).reset_index()[:10]
+        selected = topic_selected.sort_values('polarity', ascending = True).reset_index()[:5]
         tweet_id = list(selected.sample(1).id)[0]
     results = {"tweet": tweet_id}
     return flask.jsonify(results)

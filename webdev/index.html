@@ -32,7 +32,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
 
   <!--story map plugin-->
-  <script src="dist/storymap.2.4.js"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
 
 
@@ -88,7 +87,7 @@
   </div>
   <!-- /fourth section -->
 
-  <div  class="pad-section">
+  <div  class="tweet-section">
     <div class="container">
       <div class="row flask">
 
@@ -211,7 +210,7 @@
 
     $.ajax({
            type: "POST",
-           url: "http://0.0.0.0:5000/tweet",
+           url: "http://54.202.52.232:80/tweet",
            data: {'value':value, 'topic': topic},
            success: function (results) {
              tweetid = results.tweet
@@ -291,21 +290,22 @@
 
     	}).addTo(map);
 
+      var hurricaneicon = L.icon({
+        iconUrl: 'img/hurricane.svg',
+        iconSize: [38, 95], // size of the icon
+      });
+
+
       var myStops = L.geoJson(routeData, {
 
-      filter : function(feature) {
-          if(feature.geometry.type == "Point") {
-              return feature;
-          }
-      },
-
-
-      onEachFeature : function(feature, layer) {
-          layer.bindTooltip(feature.properties.date);
-
-      }
-
+        pointToLayer: function (feature, latlng) {
+          return L.marker(latlng, {icon: hurricaneicon}).bindTooltip(feature.properties.date,  {
+              permanent: false,
+              className: 'myCSSClass'
+          })
+         }
       }).addTo(map);
+
 
   </script>
 

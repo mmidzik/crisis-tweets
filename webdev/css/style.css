@@ -44,7 +44,7 @@ html, body {
 .axis line {
   fill: none;
   stroke: #000;
-  stroke-width: 2; 
+  stroke-width: 2;
   shape-rendering: crispEdges;
 }
 
@@ -66,6 +66,11 @@ html, body {
   background: white;
 }
 
+.tweet-section{
+  height: 800px;
+  padding-top: 100px;
+}
+
 /* vertical-centered text */
 .text-vcenter {
   display: table-cell;
@@ -81,7 +86,7 @@ html, body {
 
 /* additional sections */
 #home {
-  background: url(../images/texasfloodre.jpg) no-repeat center center fixed;
+  background: url(../img/texasfloodre.jpg) no-repeat center center fixed;
   display: table;
   height: 100%;
   position: relative;
@@ -95,6 +100,13 @@ html, body {
 
 #about {
 }
+
+.myCSSClass {
+  background: white;
+  border: none;
+  font-size: 14px;
+}
+
 
 #chart{
   height: 500px
@@ -128,7 +140,7 @@ html, body {
 }
 
 #information {
-  background: url(../images/texasfloodre.jpg) no-repeat center center fixed;
+  background: url(../img/texasfloodre.jpg) no-repeat center center fixed;
   display: table;
   height: 500px;
   position: relative;
